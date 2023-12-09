@@ -1,0 +1,145 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Employee class to store employee details
+class Employee {
+public:
+    string name;
+    int employeeID;
+    string department;
+
+    // Constructor to initialize employee details
+    Employee(string name, int employeeID, string department) : name(name), employeeID(employeeID), department(department) {}
+};
+
+// Employee Management System class
+class EmployeeManagementSystem {
+private:
+    vector<Employee> employees; // Vector to store employee records
+
+public:
+    // Function to add a new employee record
+    void addEmployee() {
+        string name, department;
+        int employeeID;
+
+        cout << "Enter Employee Name: ";
+        cin >> name;
+
+        cout << "Enter Employee ID: ";
+        cin >> employeeID;
+
+        cout << "Enter Department: ";
+        cin >> department;
+
+        Employee newEmployee(name, employeeID, department);
+        employees.push_back(newEmployee);
+        cout << "Employee added successfully!" << endl;
+    }
+
+    // Function to list all employee records
+    void listEmployees() {
+        if (employees.empty()) {
+            cout << "No records found!" << endl;
+            return;
+        }
+
+        cout << "Employee Records:" << endl;
+        cout << "---------------------------------------------" << endl;
+        cout << "ID\tName\tDepartment" << endl;
+        cout << "---------------------------------------------" << endl;
+
+        for (const auto &employee : employees) {
+            cout << employee.employeeID << "\t" << employee.name << "\t" << employee.department << endl;
+        }
+        cout << "---------------------------------------------" << endl;
+    }
+
+    // Function to modify an employee record
+    void modifyEmployee() {
+        int empID;
+        cout << "Enter Employee ID to modify: ";
+        cin >> empID;
+
+        bool found = false;
+        for (auto &employee : employees) {
+            if (employee.employeeID == empID) {
+                string newName, newDepartment;
+
+                cout << "Enter New Name: ";
+                cin >> newName;
+                employee.name = newName;
+
+                cout << "Enter New Department: ";
+                cin >> newDepartment;
+                employee.department = newDepartment;
+
+                cout << "Employee record updated!" << endl;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            cout << "Employee with ID " << empID << " not found!" << endl;
+        }
+    }
+
+    // Function to delete an employee record
+    void deleteEmployee() {
+        int empID;
+        cout << "Enter Employee ID to delete: ";
+        cin >> empID;
+
+        for (auto it = employees.begin(); it != employees.end(); ++it) {
+            if (it->employeeID == empID) {
+                it = employees.erase(it);
+                cout << "Employee record deleted!" << endl;
+                return;
+            }
+        }
+
+        cout << "Employee with ID " << empID << " not found!" << endl;
+    }
+};
+
+int main() {
+    EmployeeManagementSystem EMS;
+    int choice;
+
+    do {
+        cout << "\nEmployee Management System\n";
+        cout << "1. Add Employee\n";
+        cout << "2. List Employees\n";
+        cout << "3. Modify Employee\n";
+        cout << "4. Delete Employee\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                EMS.addEmployee();
+                break;
+            case 2:
+                EMS.listEmployees();
+                break;
+            case 3:
+                EMS.modifyEmployee();
+                break;
+            case 4:
+                EMS.deleteEmployee();
+                break;
+            case 5:
+                cout << "Exiting...";
+                break;
+            default:
+                cout << "Invalid choice! Please enter a valid option." << endl;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
